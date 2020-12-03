@@ -3,8 +3,6 @@ let
   inherit (builtins) filter foldl' fromJSON isList match map elemAt split;
   charList = string: filter (x: x != [] && x != "") (split "" string);
   quickElem = f: xs: let i = elemAt xs; in f i;
-  passwordPairs = filter (x: x != []) (split "\n" input);
-  # parse the passwords into different sections
   passwords = filter isList (split "([0-9]+)-([0-9]+) ([a-z]): ([a-z]+)" input);
   parsedPasswords = map (quickElem (i: [
     (fromJSON (i 0))
