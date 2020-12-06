@@ -1,4 +1,4 @@
-{ input ? import <input> }:
+{ input ? import ./input.nix }:
 # to run, use `nix eval -f ./part2.nix -I 'input=./input.nix' output`
 let
   inherit (builtins) elem elemAt foldl' head map filter tail;

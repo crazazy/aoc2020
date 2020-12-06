@@ -1,6 +1,7 @@
+{ input ? builtins.readFile ./input }:
 let
   inherit (builtins) elemAt foldl' tryEval;
-  inherit (import ./part1.nix {}) quickElem charList parsedPasswords;
+  inherit (import ./part1.nix { inherit input; }) quickElem charList parsedPasswords;
   isValid = quickElem (i: let
     fst = (i 0) - 1;
     snd = (i 1) - 1;

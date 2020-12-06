@@ -1,5 +1,6 @@
+{ input ? builtins.readFile ./input }:
 let
-  inherit (import ./part1.nix {}) chars mod quickElem;
+  inherit (import ./part1.nix { inherit input; }) chars mod quickElem;
   inherit (builtins) elemAt foldl' head length;
   product = foldl' (a: b: a * b) 1;
   calculateTrees = tuple: let

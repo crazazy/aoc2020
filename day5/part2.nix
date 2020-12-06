@@ -1,5 +1,6 @@
+{ input ? builtins.readFile ./input}:
 let
-  inherit (import ./part1.nix {}) IDs;
+  inherit (import ./part1.nix { inherit input; }) IDs;
   inherit (builtins) elemAt head foldl' sort tail;
   sortedIDs = sort (a: b: a < b) IDs;
   fix = f: let x = f x; in x;

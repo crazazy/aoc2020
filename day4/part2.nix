@@ -1,5 +1,6 @@
+{ input ? builtins.readFile ./input}:
 let
-  inherit (import ./part1.nix {}) all oneOf lines;
+  inherit (import ./part1.nix { inherit input }) all oneOf lines;
   inherit (builtins) attrNames deepSeq elem elemAt filter foldl' fromJSON isInt isList length match split stringLength substring tryEval;
   quickElem = f: xs: let i = elemAt xs; in f i;
   isIntStr = x: match "[0-9]+" x != null;
