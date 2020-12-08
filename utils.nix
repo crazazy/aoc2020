@@ -34,18 +34,4 @@ in rec {
   all = foldl' (a: b: a && b) true;
   min = xs: foldl' (a: b: if a < b then a else b) (head xs) (tail xs); # maxInt
   max = xs: foldl' (a: b: if a > b then a else b) (head xs) (tail xs); # minInt/2
-
-  # In the case that we are going to work with the assembly code again
-  execute = lines: fix (f: current: accumulator: pastOps: let
-    ops = {
-      nop = _: f (current + 1) (accumulator + 0) (pastOps ++ [current]);
-      acc = x: f (current + 1) (accumulator + x) (pastOps ++ [current]);
-      jmp = x: f (current + x) (accumulator + 0) (pastOps ++ [current]);
-    };
-    do = quickElem (i: let
-      multiplier = if i 1 == "-" then -1 else 1;
-      number = fromJSON (i 2);
-    in ops.${i 0} (multiplier * number));
-  in if current == length lines then [ true accumulator ] else
-  if elem current pastOps then [ false accumulator ] else do (elemAt lines current)) 0 0 [];
-} 
+}
