@@ -1,9 +1,10 @@
 let
-  inherit (builtins) attrNames elemAt foldl' filter fromJSON genList isString isInt length listToAttrs split;
+  inherit (builtins) attrNames elem elemAt foldl' filter fromJSON genList head isString isInt length listToAttrs match split tail;
 in rec {
   fix = f: let x = f x; in x;
   # Especially useful if working with tuples (tuples in a semantic sense of course)
   quickElem = f: xs: let i = elemAt xs; in f i;
+  enumerate = xs: genList (x: [x (elemAt xs x)]) (length xs);
   charList = simpleSplit "";
   mod = a: b: if a < b then a else mod (a - b) b;
   simpleSplit = splitter: input: filter (x: isString x && x != "") (split splitter input);
@@ -31,8 +32,8 @@ in rec {
   product = foldl' (a: b: a * b) 1;
   any = foldl' (a: b: a || b) false;
   all = foldl' (a: b: a && b) true;
-  min = foldl' (a: b: if a < b then a else b)  2147483647; # maxInt
-  max = foldl' (a: b: if a > b then a else b) -2147483648; # minInt
+  min = xs: foldl' (a: b: if a < b then a else b) (head xs) (tail xs); # maxInt
+  max = xs: foldl' (a: b: if a > b then a else b) (head xs) (tail xs); # minInt/2
 
   # In the case that we are going to work with the assembly code again
   execute = lines: fix (f: current: accumulator: pastOps: let

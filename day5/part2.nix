@@ -2,8 +2,8 @@
 let
   inherit (import ./part1.nix { inherit input; }) IDs;
   inherit (builtins) elemAt head foldl' sort tail;
+  inherit (import ../utils.nix) fix;
   sortedIDs = sort (a: b: a < b) IDs;
-  fix = f: let x = f x; in x;
   output = fix (f: list: let
     e0 = elemAt list 0;
     e1 = elemAt list 1;

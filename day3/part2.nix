@@ -2,7 +2,7 @@
 let
   inherit (import ./part1.nix { inherit input; }) chars mod quickElem;
   inherit (builtins) elemAt foldl' head length;
-  product = foldl' (a: b: a * b) 1;
+  inherit (import ../utils.nix) product;
   calculateTrees = tuple: let
     j = elemAt tuple;
     right = j 0;

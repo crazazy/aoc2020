@@ -1,9 +1,8 @@
 { input ? builtins.readFile ./input}:
 let
-  inherit (import ./part1.nix { inherit input }) all oneOf lines;
-  inherit (builtins) attrNames deepSeq elem elemAt filter foldl' fromJSON isInt isList length match split stringLength substring tryEval;
-  quickElem = f: xs: let i = elemAt xs; in f i;
-  isIntStr = x: match "[0-9]+" x != null;
+  inherit (import ./part1.nix { inherit input; }) all any lines;
+  inherit (builtins) attrNames elem filter foldl' fromJSON isList length match split stringLength substring tryEval;
+  inherit (import ../utils.nix) quickElem isIntStr;
   data = map (x: filter isList (split "(...):([^ \n]+)" x)) lines;
   # use fromJSON for parsing integers.
   verifiers = {
@@ -26,7 +25,7 @@ let
     if (match ".*cm" str != null) then len >= 150 && len <= 193 else
     false;
     hcl = str: (match "#([0-9a-f]{6})" str) != null;
-    ecl = str: oneOf (map (y: y == str) ["amb" "blu" "brn" "gry" "grn" "hzl" "oth"]);
+    ecl = str: any (map (y: y == str) ["amb" "blu" "brn" "gry" "grn" "hzl" "oth"]);
     pid = str: (match "[0-9]{9}" str) != null;
     cid = str: true;
   };

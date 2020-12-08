@@ -1,10 +1,8 @@
 { input ? builtins.readFile ./input }:
 let
-  inherit (builtins) filter length head split foldl' elemAt;
-  quickElem = f: xs: let i = elemAt xs; in f i;
-  mod = a: b: if a < b then a else mod (a - b) b;
-  lines = filter (x: x != [] && x != null && x != "") (split "\n" input);
-  charList = string: filter (x: x != [] && x != "") (split "" string);
+  inherit (builtins) filter length head split foldl';
+  inherit (import ../utils.nix) quickElem mod simpleSplit charList;
+  lines = simpleSplit "\n" input;
   chars = map charList lines;
   output = foldl' (a: quickElem (i: {
     pos = mod (a.pos + 3) (length (head chars));

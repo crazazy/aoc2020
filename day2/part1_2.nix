@@ -1,8 +1,7 @@
 { input ? builtins.readFile ./input }:
 let
-  inherit (builtins) filter foldl' fromJSON isList match map elemAt split;
-  charList = string: filter (x: x != [] && x != "") (split "" string);
-  quickElem = f: xs: let i = elemAt xs; in f i;
+  inherit (builtins) filter foldl' fromJSON isList match map split;
+  inherit (import ../utils.nix) charList quickElem;
   passwords = filter isList (split "([0-9]+)-([0-9]+) ([a-z]): ([a-z]+)" input);
   parsedPasswords = map (quickElem (i: [
     (fromJSON (i 0))
