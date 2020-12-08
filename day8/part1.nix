@@ -6,9 +6,9 @@ let
   quickElem = f: xs: let i = elemAt xs; in f i;
   execute = lines: fix (f: current: accumulator: pastOps: let
     ops = {
-      "nop" = _: f (current + 1) (accumulator + 0) (pastOps ++ [current]);
-      "acc" = x: f (current + 1) (accumulator + x) (pastOps ++ [current]);
-      "jmp" = x: f (current + x) (accumulator + 0) (pastOps ++ [current]);
+      nop = _: f (current + 1) (accumulator + 0) (pastOps ++ [current]);
+      acc = x: f (current + 1) (accumulator + x) (pastOps ++ [current]);
+      jmp = x: f (current + x) (accumulator + 0) (pastOps ++ [current]);
     };
     do = quickElem (i: let
       multiplier = if i 1 == "-" then -1 else 1;
