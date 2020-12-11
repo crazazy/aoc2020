@@ -6,6 +6,8 @@ in rec {
   quickElem = f: xs: let i = elemAt xs; in f i;
   enumerate = xs: genList (x: [x (elemAt xs x)]) (length xs);
   charList = simpleSplit "";
+  take = n: xs: if n == 0 then [] else [(head xs)] ++ take (n - 1) (tail xs);
+  drop = n: xs: if n == 0 then xs else drop (n - 1) (tail xs);
   mod = a: b: if a < b then a else mod (a - b) b;
   simpleSplit = splitter: input: filter (x: isString x && x != "") (split splitter input);
   attrsToList = attrs: map (k: [k attrs.${k}]) (attrNames attrs);
