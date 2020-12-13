@@ -1,14 +1,16 @@
 let
-  inherit (builtins) attrNames elem elemAt foldl' filter fromJSON genList head isString isInt length listToAttrs match split tail;
+  inherit (builtins) attrNames div elem elemAt foldl' filter fromJSON genList head isString isInt length listToAttrs match split tail;
 in rec {
   fix = f: let x = f x; in x;
   # Especially useful if working with tuples (tuples in a semantic sense of course)
   quickElem = f: xs: let i = elemAt xs; in f i;
   enumerate = xs: genList (x: [x (elemAt xs x)]) (length xs);
   charList = simpleSplit "";
+  gcd = a: b: if b == 0 then a else gcd b (mod a b);
+  lcm = a: b: a * b / (gcd a b); 
   take = n: xs: if n == 0 then [] else [(head xs)] ++ take (n - 1) (tail xs);
   drop = n: xs: if n == 0 then xs else drop (n - 1) (tail xs);
-  mod = a: b: if a < b then a else mod (a - b) b;
+  mod = base: int: base - (int * (div base int));
   simpleSplit = splitter: input: filter (x: isString x && x != "") (split splitter input);
   attrsToList = attrs: map (k: [k attrs.${k}]) (attrNames attrs);
   listToAttrs = list: listToAttrs (map (quickElem (i: {${i 0} = i 1;})) list);
